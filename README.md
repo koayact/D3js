@@ -4,6 +4,7 @@ Dynamic, interactive visualisation models:
   <li><a href="https://github.com/koayact/D3js/blob/main/ISACA-COBIT2019%20by%20Andrew%20Koay.html">ISACA COBIT 2019 Framework</a></li>
   <li><a href="https://github.com/koayact/D3js/blob/main/NIST-CSF2.0%20by%20Andrew%20Koay.html">NIST Cybersecurity Framework (CSF) 2.0</a></li>
   <li><a href="https://github.com/koayact/D3js/blob/main/SASB-Standards-2024%20by%20Andrew%20Koay.html">SASB Standards, 2024-10-28</a></li>
+  <li><a href="https://github.com/koayact/D3js/blob/main/BIAN%20Service%20Landscape%20v13.0%20by%20Andrew%20Koay.html">BIAN Service Landscape v13.0</a></li>
 </ul>
 
 While <a href="https://github.com/koayact/D3js/blob/main/SASB-Standards-2024%20by%20Andrew%20Koay.html">SASB</a> provides a structure for ESG (Environmental, Social, <u>G</u>overnance) disclosures, I underscore the <u>G</u>overnance as it also applies to all listed companies on Stock Exchanges since they are <i>Promoting Transparent And Efficient Capital Markets FN-EX-410a.4</i> to align sustainability efforts with investor expectations.  Screenshot below also captures <i>Managing Business Continuity And Technology Risks: FN-EX-550a.1 on Market Disruptions; FN-EX-550a.2 on Data Breaches; and FN-EX-550a.3 on Efforts to Prevent Technology Errors, Security Breaches and Market Disruptions.</i>
