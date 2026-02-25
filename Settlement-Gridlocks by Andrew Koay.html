@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Settlement Gridlocks by Andrew Koay, CISA.</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- Set of 25 obligations -->
+<script id="pymntObligations_25" type="application/json">
+[
+  {"source":"Participant A","target":"A owes B $500","type":"sending"},{"source":"A owes B $500","target":"Participant B","type":"receiving"},
+  {"source":"Participant B","target":"B owes C $10","type":"sending"},{"source":"B owes C $10","target":"Participant C","type":"receiving"},
+  {"source":"Participant B","target":"B owes D $20","type":"sending"},{"source":"B owes D $20","target":"Participant D","type":"receiving"},
+  {"source":"Participant B","target":"B owes E $30","type":"sending"},{"source":"B owes E $30","target":"Participant E","type":"receiving"},
+  {"source":"Participant B","target":"B owes F $40","type":"sending"},{"source":"B owes F $40","target":"Participant F","type":"receiving"},
+  {"source":"Participant B","target":"B owes G $50","type":"sending"},{"source":"B owes G $50","target":"Participant G","type":"receiving"},
+  {"source":"Participant B","target":"B owes H $60","type":"sending"},{"source":"B owes H $60","target":"Participant H","type":"receiving"},
+  {"source":"Participant B","target":"B owes I $70","type":"sending"},{"source":"B owes I $70","target":"Participant I","type":"receiving"},
+  {"source":"Participant B","target":"B owes J $80","type":"sending"},{"source":"B owes J $80","target":"Participant J","type":"receiving"},
+  {"source":"Participant B","target":"B owes K $140","type":"sending"},{"source":"B owes K $140","target":"Participant K","type":"receiving"},
+  {"source":"Participant C","target":"C owes A $60","type":"sending"},{"source":"C owes A $60","target":"Participant A","type":"receiving"},
+  {"source":"Participant D","target":"D owes A $70","type":"sending"},{"source":"D owes A $70","target":"Participant A","type":"receiving"},
+  {"source":"Participant E","target":"E owes A $80","type":"sending"},{"source":"E owes A $80","target":"Participant A","type":"receiving"},
+  {"source":"Participant F","target":"F owes A $90","type":"sending"},{"source":"F owes A $90","target":"Participant A","type":"receiving"},
+  {"source":"Participant G","target":"G owes A $200","type":"sending"},{"source":"G owes A $200","target":"Participant A","type":"receiving"},
+  {"source":"Participant H","target":"H owes C $50","type":"sending"},{"source":"H owes C $50","target":"Participant C","type":"receiving"},
+  {"source":"Participant I","target":"I owes D $50","type":"sending"},{"source":"I owes D $50","target":"Participant D","type":"receiving"},
+  {"source":"Participant J","target":"J owes E $50","type":"sending"},{"source":"J owes E $50","target":"Participant E","type":"receiving"},
+  {"source":"Participant K","target":"K owes F $50","type":"sending"},{"source":"K owes F $50","target":"Participant F","type":"receiving"},
+  {"source":"Participant J","target":"J owes G $10","type":"sending"},{"source":"J owes G $10","target":"Participant G","type":"receiving"},
+  {"source":"Participant K","target":"K owes G $140","type":"sending"},{"source":"K owes G $140","target":"Participant G","type":"receiving"},
+  {"source":"Participant H","target":"H owes K $10","type":"sending"},{"source":"H owes K $10","target":"Participant K","type":"receiving"},
+  {"source":"Participant I","target":"I owes K $20","type":"sending"},{"source":"I owes K $20","target":"Participant K","type":"receiving"},
+  {"source":"Participant J","target":"J owes K $30","type":"sending"},{"source":"J owes K $30","target":"Participant K","type":"receiving"},
+  {"source":"Participant K","target":"K owes J $10","type":"sending"},{"source":"K owes J $10","target":"Participant J","type":"receiving"}
+]
+</script>
+<!-- Separate set of 19 obligations to tinker -->
+<script id="pymntObligations_19" type="application/json">
+[
+  {"source":"Participant A","target":"A owes B $500","type":"sending"},{"source":"A owes B $500","target":"Participant B","type":"receiving"},
+  {"source":"Participant B","target":"B owes C $200","type":"sending"},{"source":"B owes C $200","target":"Participant C","type":"receiving"},
+  {"source":"Participant B","target":"B owes D $300","type":"sending"},{"source":"B owes D $300","target":"Participant D","type":"receiving"},
+  {"source":"Participant C","target":"C owes A $10","type":"sending"},{"source":"C owes A $10","target":"Participant A","type":"receiving"},
+  {"source":"Participant D","target":"D owes A $10","type":"sending"},{"source":"D owes A $10","target":"Participant A","type":"receiving"},
+  {"source":"Participant E","target":"E owes A $480","type":"sending"},{"source":"E owes A $480","target":"Participant A","type":"receiving"},
+  {"source":"Participant C","target":"C owes D $80","type":"sending"},{"source":"C owes D $80","target":"Participant D","type":"receiving"},
+  {"source":"Participant C","target":"C owes E $110","type":"sending"},{"source":"C owes E $110","target":"Participant E","type":"receiving"},
+  {"source":"Participant D","target":"D owes E $370","type":"sending"},{"source":"D owes E $370","target":"Participant E","type":"receiving"},
+  {"source":"Participant F","target":"F owes G $500","type":"sending"},{"source":"F owes G $500","target":"Participant G","type":"receiving"},
+  {"source":"Participant G","target":"G owes H $100","type":"sending"},{"source":"G owes H $100","target":"Participant H","type":"receiving"},
+  {"source":"Participant G","target":"G owes I $200","type":"sending"},{"source":"G owes I $200","target":"Participant I","type":"receiving"},
+  {"source":"Participant G","target":"G owes J $200","type":"sending"},{"source":"G owes J $200","target":"Participant J","type":"receiving"},
+  {"source":"Participant H","target":"H owes F $100","type":"sending"},{"source":"H owes F $100","target":"Participant F","type":"receiving"},
+  {"source":"Participant I","target":"I owes F $300","type":"sending"},{"source":"I owes F $300","target":"Participant F","type":"receiving"},
+  {"source":"Participant J","target":"J owes F $100","type":"sending"},{"source":"J owes F $100","target":"Participant F","type":"receiving"},
+  {"source":"Participant I","target":"I owes J $100","type":"sending"},{"source":"I owes J $100","target":"Participant J","type":"receiving"},
+  {"source":"Participant J","target":"J owes K $200","type":"sending"},{"source":"J owes K $200","target":"Participant K","type":"receiving"},
+  {"source":"Participant K","target":"K owes I $200","type":"sending"},{"source":"K owes I $200","target":"Participant I","type":"receiving"}
+]
+</script>
+<style>
+:root{
+  --link:#60a5fa;
+  --link-sending:red;
+  --link-receiving:blue;
+  --node-fill:#ccc;
+  --node-stroke:#333;
+  --label:#555;
+  --arrow:#999;
+  --particle:#22c55e;
+}
+
+.link{ stroke:var(--link); stroke-width:2px; marker-end:url(#arrow); }
+.link.sending { stroke:var(--link-sending); stroke-dasharray:0,2 1; }
+.link.receiving { stroke:var(--link-receiving); stroke-dasharray:2,3 1; }
+
+.node circle{ fill:var(--node-fill); stroke:var(--node-stroke); stroke-width:2px; }
+.node text{ fill:black; font-weight:600; }
+
+.label{ fill:var(--label); font-weight:600; pointer-events:none; }
+.particle{ fill:var(--particle); }
+.arrow-path{ fill:var(--arrow); }
+
+#container { display:flex; width:100vw; height:100vh; font-family:sans-serif; }
+#chart1 { width:60vw; height:100vh; }
+#chart2 { width:40vw; height:100vh; }
+
+
+#obligationsPanel{
+  position:fixed;
+  right:15px;
+  top:10px;
+  width:280px;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+  padding:12px;
+  font-size:12px;
+  font-family:sans-serif;
+}
+
+#netPanel{
+  position:fixed;
+  right:15px;
+  bottom:10px;
+  width:280px;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+  padding:12px;
+  font-size:12px;
+  font-family:sans-serif;
+}
+
+.obRow{
+  display:grid;
+  grid-template-columns: 28px 1fr 1fr 70px;
+  gap:6px;
+  padding:2px 0;
+  align-items:center;
+  text-align:right;
+  font-size:12px;
+}
+
+.obHeader{
+  font-weight:700;
+  border-bottom:1px solid #eee;
+  margin-bottom:4px;
+  padding-bottom:4px;
+}
+
+.title{ font-weight:700; margin-top:10px; }
+
+.netRow{
+  display:grid;
+  grid-template-columns: 1fr 70px 70px 70px;
+  gap:6px;
+  padding:2px 0;
+  align-items:center;
+  text-align:right;
+}
+
+.netHeader{
+  font-weight:700;
+  border-bottom:1px solid #eee;
+  padding-bottom:4px;
+  margin-bottom:4px;
+}
+
+.netPos{ color:#16a34a; font-weight:600; }
+.netNeg{ color:#dc2626; font-weight:600; }
+
+#netTotals{
+  border-top:1px solid #eee;
+  margin-top:6px;
+  padding-top:6px;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+<h1>Dynamic, interactive visualization of Settlement Gridlocks</h1>
+<div id="container">
+  <svg id="chart1"></svg>
+  <svg id="chart2"></svg>
+  <div id="blankSpacingForPanels" style="width:430px;">
+  </div>
+</div>
+<div id="obligationsPanel">
+  <div class="title">Payment Obligations ($M)</div>
+  <div id="obligationTable"></div>
+</div>
+<div id="netPanel">
+  <div class="title">Liquidity Positions ($M)</div>
+  <div id="netList"></div>
+  <div id="netTotals"></div>
+</div>
+
+<h3>Scenario:</h3>
+<ol>
+  <li>ALL eleven Participants (A, B, C, D, E, F, G, H, I, J, K) have insufficient funds (i.e., assume zero balance).</li>
+  <li>Thereafter, twenty-five payment obligations are placed into queues.</li>
+  <li>Consider the first obligation above where Participant A owes $500M to Participant B:
+    <ul>
+      <li>Participant A waits, expecting to receive $60M from Participant C.  However, Participant A would not know that Participant C is unable to make fulfilment as it is also expecting to receive $10M from Participant B and $50M from Participant H.</li>
+      <li>Participant A waits, expecting to receive $70M from Participant D.  However, Participant A would not know that Participant D is unable to make fulfilment as it is also expecting to receive $20M from Participant B and $50M from Participant I.</li>
+      <li>Participant A waits, expecting to receive $80M from Participant E.  However, Participant A would not know that Participant E is unable to make fulfilment as it is also expecting to receive $30M from Participant B and $50M from Participant J.</li>
+      <li>Participant A waits, expecting to receive $90M from Participant F.  However, Participant A would not know that Participant F is unable to make fulfilment as it is also expecting to receive $40M from Participant B and $50M from Participant K.</li>
+      <li>Participant A waits, expecting to receive $200M from Participant G.  However, Participant A would not know that Participant G is unable to make fulfilment as it is also expecting to receive $50M from Participant B, $10M from Participant J and $140M from Participant K.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The above is a <b>Settlement Gridlock</b> but not a <i>Deadlock</i> and here's why:
+<ul>
+  <li><b>None of the Participants have sufficient liquidity to make a payment by itself.</b></li>
+  <li><b><i>But when both, incoming and outgoing payments are NETTED and the available liquidity is used, then payments can be settled if ALL payments are coordinated together, atomically.</i></b></li>
+</ul>
+</p>
+<p>
+<h3>Summary:</h3>
+<ul>
+  <li>A <b>Liquidity Saving Mechanism (LSM)</b> is achieved using the Distributed Ledger Technology (DLT).</li>
+  <li>All payment details are protected within the DLT (using various solutions like <i>SideChains, ChildChains, Channels, Privacy Groups, Homomorphic Encryption etc.</i>), <b>solves for data sovereignty and privacy laws</b> <i>to protect bilateral relationships.</i></li> 
+  <li>Participants are able to <b>reduce liquidity costs</b> <i>by minimizing amount of regulatory capital required to cover for settlement obligations.</i>
+  <li>And these cost benefits extend to <i>multiple, counterparty Participants involved in gridlock scenarios</i> too.</li>
+  <li>Refer to <a href="https://www.mas.gov.sg/schemes-and-initiatives/project-ubin">Monetarty Authority of Singapore (MAS) Project Ubin</a> for details on my prior work in <i>Central Bank-issued Digital Currencies (CBDC) and tokenized digital assets</i> with Singapore Exchange (SGX) and banking participants.</li>
+</ul>
+</p>
+<footer>
+  <small>Copyright &copy; 2026 Andrew Koay, CISA. This work provides a dynamic, interactive visualization of Settlement Gridlock. It is licensed under the ISC License and leverages the <a href="https://d3js.org/">D3.js JavaScript library</a>.
+  <p>
+  <b>ISC License</b><br>
+  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies. <br>
+  THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
+  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  </p>
+  </small>
+</footer>
+<script lang="JavaScript">
+// ---------- DATA ----------
+const pymntObligations=JSON.parse(document.getElementById('pymntObligations_25').textContent);
+
+function parseObligations(edges){
+  const obs=[];
+  edges.filter(e=>e.type==="sending").forEach(s=>{
+    const r=edges.find(e=>e.source===s.target && e.type==="receiving");
+    if(!r) return;
+
+    const amount = +s.target.match(/\$(\d+)/)[1];
+
+    obs.push({
+      source:s.source.replace("Participant ",""),
+      target:r.target.replace("Participant ",""),
+      amount:amount,
+      label:`$${amount}`   // ← retain currency for display
+    });
+  });
+  return obs;
+}
+
+const obligations=parseObligations(pymntObligations);
+
+function computePositions(obligations){
+
+  const sent={}, received={}, net={};
+  let totalSent=0, totalReceived=0;
+
+  obligations.forEach(o=>{
+    sent[o.source]=(sent[o.source]||0)+o.amount;
+    received[o.target]=(received[o.target]||0)+o.amount;
+
+    net[o.source]=(net[o.source]||0)-o.amount;
+    net[o.target]=(net[o.target]||0)+o.amount;
+
+    totalSent+=o.amount;
+    totalReceived+=o.amount;
+  });
+
+  const participants=new Set([
+    ...Object.keys(sent),
+    ...Object.keys(received)
+  ]);
+
+  const rows=[...participants].map(p=>({
+    id:p,
+    sent:sent[p]||0,
+    received:received[p]||0,
+    net:net[p]||0
+  }));
+
+  return {rows,totalSent,totalReceived};
+}
+
+function renderNetPanel(obligations){
+
+  const {rows,totalSent,totalReceived}=computePositions(obligations);
+
+  rows.sort((a,b)=>b.net-a.net);
+
+  const list=d3.select("#netList");
+
+  // ---------- HEADER ----------
+  const header=list.selectAll(".netHeader").data([0]);
+  const headerEnter=header.enter().append("div").attr("class","netRow netHeader");
+
+  headerEnter.append("div").text("Participant");
+  headerEnter.append("div").text("Sent");
+  headerEnter.append("div").text("Recv");
+  headerEnter.append("div").text("Net");
+
+  // ---------- ROWS ----------
+  const rowsSel=list.selectAll(".netRow.data")
+    .data(rows,d=>d.id);
+
+  const enter=rowsSel.enter()
+    .append("div")
+    .attr("class","netRow data");
+
+  enter.append("div");
+  enter.append("div");
+  enter.append("div");
+  enter.append("div");
+
+  const all=enter.merge(rowsSel);
+
+  all.select("div:nth-child(1)").text(d=>d.id);
+  all.select("div:nth-child(2)").text(d=>`$${d.sent}`);
+  all.select("div:nth-child(3)").text(d=>`$${d.received}`);
+  all.select("div:nth-child(4)")
+    .attr("class",d=>d.net>=0?"netPos":"netNeg")
+    .text(d=>{
+      const sign=d.net>=0?"+":"";
+      return `${sign}$${d.net}`;
+    });
+
+  rowsSel.exit().remove();
+
+  // ---------- TOTALS ----------
+  d3.select("#netTotals")
+    .text(`Totals ($M)  |   Sent: $${totalSent}   |   Received: $${totalReceived}`);
+}
+
+// ---------- GLOBAL ARROW DEF ----------
+const defs=d3.select("body").append("svg").attr("width",0).attr("height",0).append("defs");
+defs.append("marker")
+  .attr("id","arrow").attr("viewBox","0 -5 10 10")
+  .attr("refX",22).attr("refY",0)
+  .attr("markerWidth",6).attr("markerHeight",6)
+  .attr("orient","auto")
+  .append("path").attr("d","M0,-5L10,0L0,5").attr("class","arrow-path");
+
+// ---------- DRAW FUNCTION ----------
+function drawForce(svgId,nodes,links,showLabels=true,animateFlow=false){
+  const svg=d3.select(svgId);
+  const width=svg.node().clientWidth;
+  const height=svg.node().clientHeight;
+
+  const sim=d3.forceSimulation(nodes)
+    .force("link",d3.forceLink(links).id(d=>d.id).distance(120))
+    .force("charge",d3.forceManyBody().strength(-390))
+    .force("center",d3.forceCenter(width/2,height/2))
+    .force("collision",d3.forceCollide(35));
+
+  const link=svg.append("g").selectAll("line").data(links)
+    .enter().append("line").attr("class",d=>`link ${d.type||""}`);
+
+  const label=svg.append("g").selectAll("text").data(links)
+    .enter().append("text").attr("class","label")
+    .text(d=>showLabels?(d.label ?? d.value):"");
+
+  let particles=null;
+  if(animateFlow){
+    particles=svg.append("g").selectAll("circle").data(links)
+      .enter().append("circle").attr("class","particle").attr("r",3);
+  }
+
+  const node=svg.append("g").selectAll("g").data(nodes)
+    .enter().append("g").attr("class","node")
+    .call(d3.drag()
+      .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on("end",(e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; })
+    );
+
+  node.append("circle").attr("r",16);
+  node.append("text").attr("text-anchor","middle").attr("dy",4).text(d=>d.id);
+
+
+sim.on("tick",()=>{
+  link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+      .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+
+  label.attr("x",d=>(d.source.x+d.target.x)/2)
+       .attr("y",d=>(d.source.y+d.target.y)/2);
+
+  node.attr("transform",d=>`translate(${d.x},${d.y})`);
+});
+
+// ---------- CONTINUOUS FLOW ANIMATION ----------
+if(particles){
+  d3.timer(()=>{
+    particles.each(function(d){
+      if(!d.source.x || !d.target.x) return;
+
+      if(!d._p) d._p=Math.random();
+
+      const speed = (d.value || 10) / 12000;
+      d._p = (d._p + speed) % 1;
+
+      const x = d.source.x + (d.target.x - d.source.x) * d._p;
+      const y = d.source.y + (d.target.y - d.source.y) * d._p;
+
+      d3.select(this).attr("cx",x).attr("cy",y);
+    });
+  });
+}  
+}
+
+// ---------- CHARTS ----------
+const nodes1=[...new Set(pymntObligations.flatMap(d=>[d.source,d.target]))].map(id=>({id}));
+const links1=pymntObligations.map(d=>({source:d.source,target:d.target,value:2,type:d.type}));
+drawForce("#chart1",nodes1,links1,false,false);
+
+const nodes2=[...new Set(obligations.flatMap(d=>[d.source,d.target]))].map(id=>({id}));
+const links2=obligations.map(d=>({
+  source:d.source,
+  target:d.target,
+  value:d.amount,     // numeric for animation
+  label:d.label       // formatted for display
+}));
+drawForce("#chart2",nodes2,links2,true,true);
+
+function renderObligationTable(obligations){
+
+  const table=d3.select("#obligationTable");
+
+  table.selectAll("*").remove();
+
+  const header=table.append("div").attr("class","obRow obHeader");
+  header.append("div").text("#");
+  header.append("div").text("Payor");
+  header.append("div").text("Payee");
+  header.append("div").text("Amount").attr("text-align", "right");
+
+  const rows=table.selectAll(".obRow.data")
+    .data(obligations)
+    .enter()
+    .append("div")
+    .attr("class","obRow data");
+
+  //rows.append("div").text(d=>`${d.source} → ${d.target}`);
+  rows.append("div").text((d,i)=>i+1);
+  rows.append("div").text(d=>d.source);
+  rows.append("div").text(d=>d.target);
+  rows.append("div").text(d=>`$${d.amount}`).attr("text-align", "right");
+};
+
+renderObligationTable(obligations);
+renderNetPanel(obligations);
+</script>
+</body>
+</html>
